@@ -5,6 +5,6 @@ class AssetsPath {
 
 
   /*->>--------------------------------> ICONS <-----------------------------------<<-*/
-  static const String notificationIconSVG = 'assets/icons/filter_icon.svg';
+  static const String filterIconSVG = 'assets/icons/filter_icon.svg';
 
 }

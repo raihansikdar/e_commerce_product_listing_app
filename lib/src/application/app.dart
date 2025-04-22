@@ -1,4 +1,4 @@
-import 'package:e_commerce_product_listing_app/src/features/home/views/home_page.dart';
+import 'package:e_commerce_product_listing_app/src/features/home/views/screens/home_page.dart';
 import 'package:flutter/material.dart';
 
 class ECommerceApp extends StatelessWidget {
