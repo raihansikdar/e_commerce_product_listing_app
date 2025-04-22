@@ -75,9 +75,21 @@ class ProductCard extends StatelessWidget {
                             ),
                             child: Center(child: Icon(Icons.star, color: AppColors.whiteTextColor, size: 16))),
                         SizedBox(width: 4),
-                        Text(
-                          '${product.rating} (${product.reviews})',
-                          style: TextStyle(fontSize: 12),
+                        TextComponent(
+                          text: product.rating.toString(),
+                          fontSize: size.height * k18TextSize,
+                          fontWeight: FontWeight.bold,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(width: 10,),
+                        TextComponent(
+                          text: "(${product.reviews})",
+                          fontSize: size.height * k14TextSize,
+                          fontWeight: FontWeight.w500,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          color: AppColors.secondaryTextColor,
                         ),
                       ],
                     ),
@@ -89,9 +101,19 @@ class ProductCard extends StatelessWidget {
           Positioned(
             top: size.height * k16TextSize * 0.5,
             right: size.height * k16TextSize * 0.5,
-            child: Icon(
-              Icons.favorite_border,
-              color: Colors.red,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: AppColors.whiteTextColor,
+                borderRadius: BorderRadius.circular(15)
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                ),
+              ),
             ),
           ),
           if (product.isOutOfStock)
@@ -104,10 +126,19 @@ class ProductCard extends StatelessWidget {
                   vertical: size.height * k16TextSize * 0.25,
                 ),
                 color: Colors.red,
-                child: Text(
+                child:  TextComponent(
+                  text: "Out of Stock",
+                  fontSize: size.height * k12TextSize,
+                  fontWeight: FontWeight.w500,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  color: AppColors.whiteTextColor,
+                ),
+
+                /*Text(
                   'Out of Stock',
                   style: TextStyle(color: Colors.white, fontSize: 12),
-                ),
+                ),*/
               ),
             ),
         ],

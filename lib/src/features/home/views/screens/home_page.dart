@@ -1,6 +1,7 @@
 import 'package:e_commerce_product_listing_app/src/features/home/models/product_models.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/views/widgets/product_card_widget.dart';
 import 'package:e_commerce_product_listing_app/src/utility/assets_path/assets_path.dart';
+import 'package:e_commerce_product_listing_app/src/utility/styles/app_colors.dart';
 import 'package:e_commerce_product_listing_app/src/utility/styles/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,17 +32,19 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     controller: _searchTEController,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)
-                        ),
-
-                        prefixIcon: Icon(Icons.search)
+                      prefixIcon: Icon(Icons.search),
+                      hintText: 'Search Anything...',
                     ),
 
                   ),
                 ),
                 Spacer(),
-                SvgPicture.asset(AssetsPath.filterIconSVG)
+                GestureDetector(
+                    onTap: (){
+                      _showSortBottomSheet(context);
+                    },
+
+                    child: SvgPicture.asset(AssetsPath.filterIconSVG))
               ],
             ),
 
@@ -64,4 +67,57 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  void _showSortBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Sort By',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Text(
+                'PRICE - HIGH TO LOW',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'PRICE - LOW TO HIGH',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'RATING',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
 }
