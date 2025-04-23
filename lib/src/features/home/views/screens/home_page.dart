@@ -46,6 +46,9 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         width: size.width * 0.78,
                         child: TextFormField(
+                          onChanged: (query){
+                            context.read<ProductBloc>().add(SearchProductEvent(query));
+                          },
                           controller: _searchTEController,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search),

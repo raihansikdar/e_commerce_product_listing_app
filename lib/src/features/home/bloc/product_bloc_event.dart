@@ -12,3 +12,11 @@ class FetchAllProductEvent extends ProductBlocEvent{
   List<Object?> get props => [];
 
 }
+class SearchProductEvent extends ProductBlocEvent{
+  final String query;
+  const SearchProductEvent(this.query);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

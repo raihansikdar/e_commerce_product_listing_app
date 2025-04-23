@@ -20,6 +20,15 @@ class ProductBloc extends Bloc<ProductBlocEvent,ProductBlocState>{
         throw Exception(e.toString());
       }
     });
+    on<SearchProductEvent>((event,emit){
+      final query = event.query.toLowerCase();
+      final filteredProducts = productList.where((product) {
+        return product.title!.toLowerCase().contains(query);
+      }).toList();
+
+      emit(ProductBlocDataLoaded(productList: filteredProducts));
+    });
+
   }
 
 }
