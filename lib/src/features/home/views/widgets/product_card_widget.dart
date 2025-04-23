@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../../utility/styles/constant.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
 
   const ProductCard({super.key, required this.product});
 
@@ -25,7 +25,7 @@ class ProductCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   child: Image.network(
-                    product.imageUrl,
+                    "product.imageUrl",
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -37,7 +37,7 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextComponent(
-                      text: product.name,
+                      text: "product.name",
                       fontWeight: FontWeight.bold,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
                     Row(
                       children: [
                         TextComponent(
-                          text: product.price,
+                          text: "product.price",
                           fontSize: size.height * k18TextSize,
                           fontWeight: FontWeight.bold,
                           maxLines: 1,
@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         SizedBox(width: 10,),
                         TextComponent(
-                          text: product.discount,
+                          text: "product.discount",
                           fontSize: size.height * k14TextSize,
                           fontWeight: FontWeight.w500,
                           maxLines: 1,
@@ -76,7 +76,7 @@ class ProductCard extends StatelessWidget {
                             child: Center(child: Icon(Icons.star, color: AppColors.whiteTextColor, size: 16))),
                         SizedBox(width: 4),
                         TextComponent(
-                          text: product.rating.toString(),
+                          text: "product.rating.toString()",
                           fontSize: size.height * k18TextSize,
                           fontWeight: FontWeight.bold,
                           maxLines: 1,
@@ -84,7 +84,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         SizedBox(width: 10,),
                         TextComponent(
-                          text: "(${product.reviews})",
+                          text: "({product.reviews})",
                           fontSize: size.height * k14TextSize,
                           fontWeight: FontWeight.w500,
                           maxLines: 1,
@@ -116,31 +116,31 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ),
-          if (product.isOutOfStock)
-            Positioned(
-              top: size.height * k16TextSize * 0.5,
-              left: size.height * k16TextSize * 0.5,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.height * k16TextSize * 0.5,
-                  vertical: size.height * k16TextSize * 0.25,
-                ),
-                color: Colors.red,
-                child:  TextComponent(
-                  text: "Out of Stock",
-                  fontSize: size.height * k12TextSize,
-                  fontWeight: FontWeight.w500,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  color: AppColors.whiteTextColor,
-                ),
-
-                /*Text(
-                  'Out of Stock',
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                ),*/
-              ),
-            ),
+          // if (product.isOutOfStock)
+          //   Positioned(
+          //     top: size.height * k16TextSize * 0.5,
+          //     left: size.height * k16TextSize * 0.5,
+          //     child: Container(
+          //       padding: EdgeInsets.symmetric(
+          //         horizontal: size.height * k16TextSize * 0.5,
+          //         vertical: size.height * k16TextSize * 0.25,
+          //       ),
+          //       color: Colors.red,
+          //       child:  TextComponent(
+          //         text: "Out of Stock",
+          //         fontSize: size.height * k12TextSize,
+          //         fontWeight: FontWeight.w500,
+          //         maxLines: 1,
+          //         overflow: TextOverflow.ellipsis,
+          //         color: AppColors.whiteTextColor,
+          //       ),
+          //
+          //       /*Text(
+          //         'Out of Stock',
+          //         style: TextStyle(color: Colors.white, fontSize: 12),
+          //       ),*/
+          //     ),
+          //   ),
         ],
       ),
     );

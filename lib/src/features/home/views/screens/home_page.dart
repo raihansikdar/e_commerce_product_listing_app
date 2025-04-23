@@ -1,9 +1,12 @@
+import 'package:e_commerce_product_listing_app/src/features/home/bloc/product_bloc.dart';
+import 'package:e_commerce_product_listing_app/src/features/home/bloc/product_bloc_event.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/models/product_models.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/views/widgets/product_card_widget.dart';
 import 'package:e_commerce_product_listing_app/src/utility/assets_path/assets_path.dart';
 import 'package:e_commerce_product_listing_app/src/utility/styles/app_colors.dart';
 import 'package:e_commerce_product_listing_app/src/utility/styles/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +19,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   TextEditingController _searchTEController = TextEditingController();
+
+  @override
+  void initState() {
+    context.read<ProductBloc>().add(FetchAllProductEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  return ProductCard(product: products[index]);
+                  //return ProductCard(product: products[index]);
                 },
               ),
             ),
