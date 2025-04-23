@@ -1,5 +1,6 @@
 import 'package:e_commerce_product_listing_app/src/features/home/bloc/product_bloc.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/bloc/product_bloc_event.dart';
+import 'package:e_commerce_product_listing_app/src/features/home/bloc/product_bloc_state.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/models/product_models.dart';
 import 'package:e_commerce_product_listing_app/src/features/home/views/widgets/product_card_widget.dart';
 import 'package:e_commerce_product_listing_app/src/utility/assets_path/assets_path.dart';
@@ -32,46 +33,60 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Padding(
         padding:  EdgeInsets.only(top: size.height * 0.065,left: size.height * k16TextSize,right: size.height * k16TextSize),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: size.width * 0.78,
-                  child: TextFormField(
-                    controller: _searchTEController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Search Anything...',
-                    ),
+        child: BlocBuilder<ProductBloc,ProductBlocState>(
+          builder: (context,_productBlocState) {
 
+            if(_productBlocState is ProductBlocLoading){
+              return Center(child: CircularProgressIndicator());
+            }else if(_productBlocState is ProductBlocDataLoaded){
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.78,
+                        child: TextFormField(
+                          controller: _searchTEController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            hintText: 'Search Anything...',
+                          ),
+
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                          onTap: (){
+                            _showSortBottomSheet(context);
+                          },
+
+                          child: SvgPicture.asset(AssetsPath.filterIconSVG))
+                    ],
                   ),
-                ),
-                Spacer(),
-                GestureDetector(
-                    onTap: (){
-                      _showSortBottomSheet(context);
-                    },
 
-                    child: SvgPicture.asset(AssetsPath.filterIconSVG))
-              ],
-            ),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: size.height * k16TextSize,
+                        mainAxisSpacing: size.height * k16TextSize,
+                        childAspectRatio: 0.7,
+                      ),
+                      itemCount: _productBlocState.productList.length,
+                      itemBuilder: (context, index) {
+                        return ProductCard(product: _productBlocState.productList[index]);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            } else if (_productBlocState is ProductBlocError) {
+                return Center(child: Text(_productBlocState.errorMessage));
+            } else {
+                 return SizedBox();
+            }
 
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: size.height * k16TextSize,
-                  mainAxisSpacing: size.height * k16TextSize,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  //return ProductCard(product: products[index]);
-                },
-              ),
-            ),
-          ],
+          }
         ),
       ),
     );

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductBloc extends Bloc<ProductBlocEvent,ProductBlocState>{
   ProductRepository productRepository = ProductRepository();
-  List<ProductModel>productList = [];
+  List<Products>productList = [];
 
   ProductBloc(this.productRepository):super(ProductBlocInit()){
     on<FetchAllProductEvent>((event, emit) async {
@@ -15,7 +15,9 @@ class ProductBloc extends Bloc<ProductBlocEvent,ProductBlocState>{
         productList = await productRepository.fetchProductList();
         emit(ProductBlocDataLoaded(productList: productList));
       } catch (e) {
+
         emit(ProductBlocError(errorMessage: e.toString()));
+        throw Exception(e.toString());
       }
     });
   }

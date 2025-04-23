@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import '../../../../utility/styles/constant.dart';
 
 class ProductCard extends StatelessWidget {
-  final ProductModel product;
 
+  final Products product;
   const ProductCard({super.key, required this.product});
 
   @override
@@ -25,7 +25,7 @@ class ProductCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   child: Image.network(
-                    "product.imageUrl",
+                    product.images?.first ?? '',
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -37,7 +37,7 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextComponent(
-                      text: "product.name",
+                      text:   product.title ?? '',
                       fontWeight: FontWeight.bold,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
                     Row(
                       children: [
                         TextComponent(
-                          text: "product.price",
+                          text: product.price.toString(),
                           fontSize: size.height * k18TextSize,
                           fontWeight: FontWeight.bold,
                           maxLines: 1,
@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         SizedBox(width: 10,),
                         TextComponent(
-                          text: "product.discount",
+                          text: "${product.discountPercentage}%",
                           fontSize: size.height * k14TextSize,
                           fontWeight: FontWeight.w500,
                           maxLines: 1,
@@ -76,21 +76,21 @@ class ProductCard extends StatelessWidget {
                             child: Center(child: Icon(Icons.star, color: AppColors.whiteTextColor, size: 16))),
                         SizedBox(width: 4),
                         TextComponent(
-                          text: "product.rating.toString()",
+                          text: product.rating.toString(),
                           fontSize: size.height * k18TextSize,
                           fontWeight: FontWeight.bold,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(width: 10,),
-                        TextComponent(
-                          text: "({product.reviews})",
-                          fontSize: size.height * k14TextSize,
-                          fontWeight: FontWeight.w500,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          color: AppColors.secondaryTextColor,
-                        ),
+                        // TextComponent(
+                        //   text: "({product.reviews})",
+                        //   fontSize: size.height * k14TextSize,
+                        //   fontWeight: FontWeight.w500,
+                        //   maxLines: 1,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   color: AppColors.secondaryTextColor,
+                        // ),
                       ],
                     ),
                   ],

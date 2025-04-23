@@ -19,7 +19,7 @@ class ProductBlocLoading extends ProductBlocState{
 
 class ProductBlocDataLoaded extends ProductBlocState{
 
-  final List<ProductModel>productList;
+  final List<Products>productList;
   const ProductBlocDataLoaded({required this.productList});
 
   @override

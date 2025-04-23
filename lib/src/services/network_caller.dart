@@ -9,8 +9,8 @@ class NetworkCaller{
     try{
       Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json',},);
 
-      log("getRequest statusCode ==> ${response.statusCode}");
-      log("getRequest body ==> ${response.body}");
+      // log("getRequest statusCode ==> ${response.statusCode}");
+      // log("getRequest body ==> ${response.body}");
 
       if(response.statusCode == 200 ){
         return NetworkResponse(isSuccess: true, statusCode: response.statusCode, body: jsonDecode(response.body));
