@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           children: [
-            // Search Bar and Filter Button (ALWAYS VISIBLE)
             Row(
               children: [
                 SizedBox(
@@ -65,9 +64,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            const SizedBox(height: 16), // Add spacing between UI and Grid
+            const SizedBox(height: 16),
 
-            // BlocBuilder ONLY for Grid View
             Expanded(
               child: BlocBuilder<ProductBloc, ProductBlocState>(
                 builder: (context, state) {
