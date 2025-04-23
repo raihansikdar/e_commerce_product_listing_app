@@ -20,13 +20,26 @@ class ProductBloc extends Bloc<ProductBlocEvent,ProductBlocState>{
         throw Exception(e.toString());
       }
     });
-    on<SearchProductEvent>((event,emit){
-      final query = event.query.toLowerCase();
-      final filteredProducts = productList.where((product) {
-        return product.title!.toLowerCase().contains(query);
-      }).toList();
-
-      emit(ProductBlocDataLoaded(productList: filteredProducts));
+    on<SearchProductEvent>((event, emit) async {
+      //emit(ProductBlocLoading());
+      try {
+        final searchResults = await productRepository.fetchSearchProductList(searchProduct: event.query);
+        emit(ProductBlocDataLoaded(productList: searchResults));
+      } catch (e) {
+        emit(ProductBlocError(errorMessage: e.toString()));
+      }
+    });
+    on<SortingOrderProductEvent>((event, emit) async {
+      emit(ProductBlocLoading());
+      try {
+        final sortedList = await productRepository.fetchSortedProductList(
+          sortBy: event.sortBy,
+          order: event.orderQuery,
+        );
+        emit(ProductBlocDataLoaded(productList: sortedList));
+      } catch (e) {
+        emit(ProductBlocError(errorMessage: e.toString()));
+      }
     });
 
   }

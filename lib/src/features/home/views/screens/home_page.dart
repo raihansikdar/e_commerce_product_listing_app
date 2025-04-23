@@ -32,68 +32,74 @@ class _HomePageState extends State<HomePage> {
     Size size  = MediaQuery.sizeOf(context);
     return Scaffold(
       body: Padding(
-        padding:  EdgeInsets.only(top: size.height * 0.065,left: size.height * k16TextSize,right: size.height * k16TextSize),
-        child: BlocBuilder<ProductBloc,ProductBlocState>(
-          builder: (context,_productBlocState) {
-
-            if(_productBlocState is ProductBlocLoading){
-              return Center(child: CircularProgressIndicator());
-            }else if(_productBlocState is ProductBlocDataLoaded){
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.78,
-                        child: TextFormField(
-                          onChanged: (query){
-                            context.read<ProductBloc>().add(SearchProductEvent(query));
-                          },
-                          controller: _searchTEController,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search),
-                            hintText: 'Search Anything...',
-                          ),
-
-                        ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                          onTap: (){
-                            _showSortBottomSheet(context);
-                          },
-
-                          child: SvgPicture.asset(AssetsPath.filterIconSVG))
-                    ],
+        padding: EdgeInsets.only(
+          top: size.height * 0.065,
+          left: size.height * k16TextSize,
+          right: size.height * k16TextSize,
+        ),
+        child: Column(
+          children: [
+            // Search Bar and Filter Button (ALWAYS VISIBLE)
+            Row(
+              children: [
+                SizedBox(
+                  width: size.width * 0.78,
+                  child: TextFormField(
+                    onChanged: (query) {
+                      context.read<ProductBloc>().add(SearchProductEvent(query));
+                    },
+                    controller: _searchTEController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: 'Search Anything...',
+                    ),
                   ),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    _showSortBottomSheet(context);
+                  },
+                  child: SvgPicture.asset(AssetsPath.filterIconSVG),
+                ),
+              ],
+            ),
 
-                  Expanded(
-                    child: GridView.builder(
+            const SizedBox(height: 16), // Add spacing between UI and Grid
+
+            // BlocBuilder ONLY for Grid View
+            Expanded(
+              child: BlocBuilder<ProductBloc, ProductBlocState>(
+                builder: (context, state) {
+                  if (state is ProductBlocLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ProductBlocDataLoaded) {
+                    return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: size.height * k16TextSize,
                         mainAxisSpacing: size.height * k16TextSize,
                         childAspectRatio: 0.7,
                       ),
-                      itemCount: _productBlocState.productList.length,
+                      itemCount: state.productList.length,
                       itemBuilder: (context, index) {
-                        return ProductCard(product: _productBlocState.productList[index]);
+                        return ProductCard(product: state.productList[index]);
                       },
-                    ),
-                  ),
-                ],
-              );
-            } else if (_productBlocState is ProductBlocError) {
-                return Center(child: Text(_productBlocState.errorMessage));
-            } else {
-                 return SizedBox();
-            }
-
-          }
+                    );
+                  } else if (state is ProductBlocError) {
+                    return Center(child: Text(state.errorMessage));
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
   void _showSortBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -123,19 +129,37 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 16),
-              Text(
-                'PRICE - HIGH TO LOW',
-                style: TextStyle(fontSize: 16),
+              GestureDetector(
+                onTap: (){
+                  context.read<ProductBloc>().add(SortingOrderProductEvent('price', 'asc'));
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Price - High to Low',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
               SizedBox(height: 16),
-              Text(
-                'PRICE - LOW TO HIGH',
-                style: TextStyle(fontSize: 16),
+              GestureDetector(
+                onTap: (){
+                  context.read<ProductBloc>().add(SortingOrderProductEvent('price', 'desc'));
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Price - Low to High',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
               SizedBox(height: 16),
-              Text(
-                'RATING',
-                style: TextStyle(fontSize: 16),
+              GestureDetector(
+                onTap: (){
+                  context.read<ProductBloc>().add(SortingOrderProductEvent('rating', 'desc'));
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Rating',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
               SizedBox(height: 16),
             ],

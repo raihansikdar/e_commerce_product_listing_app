@@ -17,6 +17,16 @@ class SearchProductEvent extends ProductBlocEvent{
   const SearchProductEvent(this.query);
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [query];
+
+}
+
+class SortingOrderProductEvent extends ProductBlocEvent{
+  final String sortBy;
+  final String orderQuery;
+  const SortingOrderProductEvent(this.sortBy,this.orderQuery);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [sortBy,orderQuery];
 
 }
