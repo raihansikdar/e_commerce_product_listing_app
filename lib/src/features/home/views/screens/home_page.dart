@@ -438,23 +438,60 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const SizedBox(height: 16),
+            // Expanded(
+            //   child: BlocBuilder<ProductBloc, ProductBlocState>(
+            //     builder: (context, state) {
+            //       if (state is ProductBlocLoading) {
+            //         return const Center(child: CircularProgressIndicator());
+            //       } else if (state is ProductBlocDataLoaded) {
+            //         return GridView.builder(
+            //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //             crossAxisCount: 2,
+            //             crossAxisSpacing: size.height * k16TextSize,
+            //             mainAxisSpacing: size.height * k16TextSize,
+            //             childAspectRatio: 0.7,
+            //           ),
+            //           itemCount: state.productList.length,
+            //           itemBuilder: (context, index) {
+            //             return ProductCard(product: state.productList[index]);
+            //           },
+            //         );
+            //       } else if (state is ProductBlocError) {
+            //         return Center(child: Text(state.errorMessage));
+            //       } else {
+            //         return const SizedBox();
+            //       }
+            //     },
+            //   ),
+            // ),
+
             Expanded(
               child: BlocBuilder<ProductBloc, ProductBlocState>(
                 builder: (context, state) {
-                  if (state is ProductBlocLoading) {
+                  if (state is ProductBlocLoading && state is! ProductBlocDataLoaded) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is ProductBlocDataLoaded) {
-                    return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: size.height * k16TextSize,
-                        mainAxisSpacing: size.height * k16TextSize,
-                        childAspectRatio: 0.7,
-                      ),
-                      itemCount: state.productList.length,
-                      itemBuilder: (context, index) {
-                        return ProductCard(product: state.productList[index]);
+                    return NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                          context.read<ProductBloc>().add(
+                            FetchAllProductEvent(skip: context.read<ProductBloc>().skip),
+                          );
+                        }
+                        return true;
                       },
+                      child: GridView.builder(
+                        itemCount: state.productList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.7,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                        itemBuilder: (context, index) {
+                          return ProductCard(product: state.productList[index]);
+                        },
+                      ),
                     );
                   } else if (state is ProductBlocError) {
                     return Center(child: Text(state.errorMessage));
@@ -464,6 +501,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
+
           ],
         ),
       ),

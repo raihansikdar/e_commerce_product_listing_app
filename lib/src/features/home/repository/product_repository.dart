@@ -27,11 +27,28 @@ import 'package:e_commerce_product_listing_app/src/services/network_response.dar
 import 'package:e_commerce_product_listing_app/src/utility/app_urls/app_urls.dart';
 
 class ProductRepository {
-  Future<List<Products>> fetchProductList() async {
-    NetworkResponse response = await NetworkCaller.getRequest(Urls.productUrl);
+  // Future<List<Products>> fetchProductList() async {
+  //   NetworkResponse response = await NetworkCaller.getRequest(Urls.productUrl);
+  //
+  //   log("getRequest statusCode ==> ${response.statusCode}");
+  //   log("getRequest body ==> ${response.body}");
+  //
+  //   if (response.isSuccess) {
+  //     Map<String, dynamic> jsonData = response.body;
+  //     ProductModel productModel = ProductModel.fromJson(jsonData);
+  //     return productModel.products ?? [];
+  //   } else {
+  //     throw Exception('Failed to fetch data');
+  //   }
+  // }
 
-    log("getRequest statusCode ==> ${response.statusCode}");
-    log("getRequest body ==> ${response.body}");
+  Future<List<Products>> fetchProductList({int skip = 0, int limit = 20}) async {
+    final String url = 'https://dummyjson.com/products?limit=$limit&skip=$skip';
+    NetworkResponse response = await NetworkCaller.getRequest(url);
+
+      log("getRequest statusCode ==> ${response.statusCode}");
+      log("getRequest body ==> ${response.body}");
+
 
     if (response.isSuccess) {
       Map<String, dynamic> jsonData = response.body;
@@ -41,6 +58,8 @@ class ProductRepository {
       throw Exception('Failed to fetch data');
     }
   }
+
+
 
 
   Future<List<Products>> fetchSearchProductList({required String searchProduct}) async {

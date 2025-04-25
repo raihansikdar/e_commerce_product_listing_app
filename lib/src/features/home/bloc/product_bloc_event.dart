@@ -6,12 +6,16 @@ const ProductBlocEvent();
 
 }
 
-class FetchAllProductEvent extends ProductBlocEvent{
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
+class FetchAllProductEvent extends ProductBlocEvent {
+  final int skip;
+  final int limit;
 
+  const FetchAllProductEvent({this.skip = 0, this.limit = 20});
+
+  @override
+  List<Object?> get props => [skip, limit];
 }
+
 class SearchProductEvent extends ProductBlocEvent{
   final String query;
   const SearchProductEvent(this.query);
@@ -29,4 +33,13 @@ class SortingOrderProductEvent extends ProductBlocEvent{
   // TODO: implement props
   List<Object?> get props => [sortBy,orderQuery];
 
+}
+
+class LoadMoreProductsEvent extends ProductBlocEvent {
+  final int skip;
+  final int limit;
+  const LoadMoreProductsEvent({this.skip = 0, this.limit = 20});
+
+  @override
+  List<Object?> get props => [skip, limit];
 }

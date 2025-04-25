@@ -5,21 +5,38 @@ import 'package:e_commerce_product_listing_app/src/features/home/repository/prod
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductBloc extends Bloc<ProductBlocEvent,ProductBlocState>{
-  ProductRepository productRepository = ProductRepository();
-  List<Products>productList = [];
+  final ProductRepository productRepository;
+  List<Products> productList = [];
+  int skip = 0;
+  final int limit = 20;
+  bool isFetching = false;
 
-  ProductBloc(this.productRepository):super(ProductBlocInit()){
+  ProductBloc(this.productRepository) : super(ProductBlocInit()) {
     on<FetchAllProductEvent>((event, emit) async {
+      if (isFetching) return;
+      isFetching = true;
       emit(ProductBlocLoading());
+
       try {
-        productList = await productRepository.fetchProductList();
+        final newProducts = await productRepository.fetchProductList(skip: event.skip, limit: event.limit);
+        if (event.skip == 0) {
+          productList = newProducts;
+        } else {
+          productList.addAll(newProducts);
+        }
+        skip += limit;
         emit(ProductBlocDataLoaded(productList: productList));
       } catch (e) {
-
         emit(ProductBlocError(errorMessage: e.toString()));
-        throw Exception(e.toString());
+      } finally {
+        isFetching = false;
       }
     });
+
+
+
+
+
     on<SearchProductEvent>((event, emit) async {
       //emit(ProductBlocLoading());
       try {
